@@ -17,7 +17,7 @@ changelogger -r Path\to\repository -e Path\to\exportedfile
 * Generate changelog from given repository based on version tags
 * Export grouped commits by tags into a markdown file
 
-## Future features
+## Planned features
 
 * Link to ticketing system and group commits to defact from ticketing system
   * Extract defact identifier from commit message
@@ -25,7 +25,7 @@ changelogger -r Path\to\repository -e Path\to\exportedfile
 
 ## Contribute
 
-If you like to contribute to this probject feel free to add an issue, send a pull request (feature as well as a refactoring) or just send me your opinion. Please send me a short note if you use this tool ([@norberteder](http://www.twitter.com/norberteder "@norberteder")).
+If you like to contribute to this project feel free to add an issue, send a pull request (feature as well as a refactoring) or just send me your opinion.
 
 ## License
 
