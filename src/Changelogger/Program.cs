@@ -3,6 +3,7 @@ using Changelogger.Shared.Export;
 using Changelogger.Shared.LogMessages;
 using CommandLine;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Changelogger
@@ -11,7 +12,14 @@ namespace Changelogger
     {
         static void Main(string[] args)
         {
+            var sw = new Stopwatch();
+            sw.Start();
+
             Parser.Default.ParseArguments<Options>(args).WithParsed(HandleOptions);
+
+            sw.Stop();
+
+            Trace.TraceInformation("Created changelog in {0}", sw.Elapsed);
 
             Console.ReadKey();
         }
