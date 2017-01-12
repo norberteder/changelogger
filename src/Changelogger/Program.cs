@@ -21,11 +21,17 @@ namespace Changelogger
 
             Trace.TraceInformation("Created changelog in {0}", sw.Elapsed);
 
+            Console.WriteLine("Done. Press any key.");
             Console.ReadKey();
         }
 
         private static void HandleOptions(Options options)
         {
+            if (options.Verbose)
+            {
+                Trace.Listeners.Add(new ConsoleTraceListener());
+            }
+
             GitInformation info = new GitInformation();
             var repository = info.GetRepositoryInformation(options.RepositoryPath);
 

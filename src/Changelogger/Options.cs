@@ -9,5 +9,8 @@ namespace Changelogger
 
         [Option('e', "export file name", Required = true)]
         public string ExportFileName { get; set; }
+
+        [Option('v', "verbose")]
+        public bool Verbose { get; set; }
     }
 }
