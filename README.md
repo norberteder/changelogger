@@ -12,6 +12,12 @@ I need a tool which is able to generate a changelog for a git repository when th
 changelogger -r Path\to\repository -e Path\to\exportedfile
 ```
 
+### Arguments
+
+* `-r`: Path to repository
+* `-e`: Path and filename
+* `-v`: Verbose mode -> output of detailed information to the standard output
+
 ## Features
 
 * Generate changelog from given repository based on version tags
