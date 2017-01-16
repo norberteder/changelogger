@@ -11,18 +11,25 @@ namespace Changelogger.Test
     public class LogMessagesTests
     {
         GitRepository repo;
-        string commit1 = "#1: Add initial code";
-        string commit2 = "#2: Add an awesome feature";
-        string commit3 = "#3: Update readme";
-        string commit4 = "#4: Add hot new feature";
-        string commit5 = "#5: Update readme";
-        string commit6 = "#6: Bugfix xy";
-        string commit7 = "#7: Add feature 0815";
-        string commit8 = "#8: Remove feature 4711";
-        string tag1 = "0.0.1";
-        string tag2 = "0.0.2";
-        string tag3 = "0.0.3";
-        string tag4 = "0.0.4";
+        string[] commitMessages = new[]
+        {
+            "#1: Add initial code",
+            "#2: Add an awesome feature",
+            "#3: Update readme",
+            "#4: Add hot new feature",
+            "#5: Update readme",
+            "#6: Bugfix xy",
+            "#7: Add feature 0815",
+            "#8: Remove feature 4711"
+        };
+
+        string[] commitTags = new[]
+        {
+            "0.0.1",
+            "0.0.2",
+            "0.0.3",
+            "0.0.4"
+        };
 
         [TestInitialize]
         public void Setup()
@@ -34,22 +41,22 @@ namespace Changelogger.Test
 
             List<GitTag> tags = new List<GitTag>
             {
-                new GitTag() { Hash = hash1, Name = tag1 },
-                new GitTag() { Hash = hash2, Name = tag2 },
-                new GitTag() { Hash = hash3, Name = tag3 },
-                new GitTag() { Hash = hash4, Name = tag4 }
+                new GitTag() { Hash = hash1, Name = commitTags[0] },
+                new GitTag() { Hash = hash2, Name = commitTags[1] },
+                new GitTag() { Hash = hash3, Name = commitTags[2] },
+                new GitTag() { Hash = hash4, Name = commitTags[3] }
             };
 
             List<GitCommit> commits = new List<GitCommit>
             {
-                new GitCommit() { Hash = hash4, CommitedAt = DateTime.Now, Message = commit8 },
-                new GitCommit() { Hash = hash3, CommitedAt = DateTime.Now, Message = commit7 },
-                new GitCommit() { Hash = Guid.NewGuid().ToString(), CommitedAt = DateTime.Now, Message = commit6 },
-                new GitCommit() { Hash = hash2, CommitedAt = DateTime.Now, Message = commit5 },
-                new GitCommit() { Hash = Guid.NewGuid().ToString(), CommitedAt = DateTime.Now, Message = commit4 },
-                new GitCommit() { Hash = hash1, CommitedAt = DateTime.Now, Message = commit3 },
-                new GitCommit() { Hash = Guid.NewGuid().ToString(), CommitedAt = DateTime.Now, Message = commit2 },
-                new GitCommit() { Hash = Guid.NewGuid().ToString(), CommitedAt = DateTime.Now, Message = commit1 }
+                new GitCommit() { Hash = hash4, CommitedAt = DateTime.Now, Message = commitMessages[7] },
+                new GitCommit() { Hash = hash3, CommitedAt = DateTime.Now, Message = commitMessages[6] },
+                new GitCommit() { Hash = Guid.NewGuid().ToString(), CommitedAt = DateTime.Now, Message = commitMessages[5] },
+                new GitCommit() { Hash = hash2, CommitedAt = DateTime.Now, Message = commitMessages[4] },
+                new GitCommit() { Hash = Guid.NewGuid().ToString(), CommitedAt = DateTime.Now, Message = commitMessages[3] },
+                new GitCommit() { Hash = hash1, CommitedAt = DateTime.Now, Message = commitMessages[2] },
+                new GitCommit() { Hash = Guid.NewGuid().ToString(), CommitedAt = DateTime.Now, Message = commitMessages[1] },
+                new GitCommit() { Hash = Guid.NewGuid().ToString(), CommitedAt = DateTime.Now, Message = commitMessages[0] }
             };
 
             repo = new GitRepository(tags, commits, GitSortStrategy.Time);
@@ -108,23 +115,19 @@ namespace Changelogger.Test
             Assert.IsNotNull(logs);
             Assert.AreEqual<int>(8, logs.Count);
 
-            Assert.AreEqual(commit1, logs[0].Message);
-            Assert.AreEqual(commit2, logs[1].Message);
-            Assert.AreEqual(commit3, logs[2].Message);
-            Assert.AreEqual(commit4, logs[3].Message);
-            Assert.AreEqual(commit5, logs[4].Message);
-            Assert.AreEqual(commit6, logs[5].Message);
-            Assert.AreEqual(commit7, logs[6].Message);
-            Assert.AreEqual(commit8, logs[7].Message);
+            for (int i = 0; i < commitMessages.Length; i++)
+            {
+                Assert.AreEqual(commitMessages[i], logs[i].Message);
+            }
 
-            Assert.AreEqual(tag1, logs[0].Tag);
-            Assert.AreEqual(tag1, logs[1].Tag);
-            Assert.AreEqual(tag1, logs[2].Tag);
-            Assert.AreEqual(tag2, logs[3].Tag);
-            Assert.AreEqual(tag2, logs[4].Tag);
-            Assert.AreEqual(tag3, logs[5].Tag);
-            Assert.AreEqual(tag3, logs[6].Tag);
-            Assert.AreEqual(tag4, logs[7].Tag);
+            Assert.AreEqual(commitTags[0], logs[0].Tag);
+            Assert.AreEqual(commitTags[0], logs[1].Tag);
+            Assert.AreEqual(commitTags[0], logs[2].Tag);
+            Assert.AreEqual(commitTags[1], logs[3].Tag);
+            Assert.AreEqual(commitTags[1], logs[4].Tag);
+            Assert.AreEqual(commitTags[2], logs[5].Tag);
+            Assert.AreEqual(commitTags[2], logs[6].Tag);
+            Assert.AreEqual(commitTags[3], logs[7].Tag);
         }
     }
 }
