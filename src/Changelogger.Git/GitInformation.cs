@@ -10,46 +10,42 @@ namespace Changelogger.Git
     {
         public GitRepository GetRepositoryInformation(string repositoryPath)
         {
-            var tags = GetTags(repositoryPath).ToList();
-            var commits = GetCommits(repositoryPath).ToList();
-            var sortStrategy = GetSortStrategy(repositoryPath);
-
-            return new GitRepository(tags, commits, sortStrategy);
-        }
-
-        private IEnumerable<GitTag> GetTags(string repositoryPath)
-        {
-            using (var repo = new Repository(repositoryPath))
+            using (var repository = new Repository(repositoryPath))
             {
-                foreach(var tag in repo.Tags)
-                {
-                    Trace.TraceInformation("Found Tag: {0} {1}", tag.Reference.TargetIdentifier, tag.FriendlyName);
-                    yield return new GitTag { Hash = tag.Reference.TargetIdentifier, Name = tag.FriendlyName };
-                }
+                var tags = GetTags(repository).ToList();
+                var commits = GetCommits(repository).ToList();
+                var sortStrategy = GetSortStrategy(repository);
+
+                return new GitRepository(tags, commits, sortStrategy);
             }
         }
 
-        private IEnumerable<GitCommit> GetCommits(string repositoryPath)
+        private List<GitTag> GetTags(Repository repository)
         {
-            using(var repo = new Repository(repositoryPath))
+            List<GitTag> tags = new List<GitTag>();
+            foreach (var tag in repository.Tags)
             {
-                foreach(var commit in repo.Commits)
-                {
-                    Trace.TraceInformation("Found commit {0} {1} {2}", commit.Committer.When, commit.Sha, commit.Message);
-                    yield return new GitCommit() { Hash = commit.Sha, Message = commit.Message, CommitedAt = commit.Committer.When };
-                }
+                Trace.TraceInformation("Found Tag: {0} {1}", tag.Reference.TargetIdentifier, tag.FriendlyName);
+                tags.Add(new GitTag { Hash = tag.Reference.TargetIdentifier, Name = tag.FriendlyName });
             }
+            return tags;
         }
 
-        private GitSortStrategy GetSortStrategy(string repositoryPath)
+        private List<GitCommit> GetCommits(Repository repository)
         {
-            using (var repo = new Repository(repositoryPath))
+            List<GitCommit> commits = new List<GitCommit>();
+            foreach (var commit in repository.Commits)
             {
-                //var repoSortVal = repo.Commits.SortedBy.ToString();
-                //GitSortStrategy strategy = (GitSortStrategy)Enum.Parse(typeof(GitSortStrategy), repoSortVal);
-                Trace.TraceInformation("Repository commit sort strategy is " + repo.Commits.SortedBy.ToString());
-                return (GitSortStrategy)repo.Commits.SortedBy;
+                Trace.TraceInformation("Found commit {0} {1} {2}", commit.Committer.When, commit.Sha, commit.Message);
+                commits.Add(new GitCommit() { Hash = commit.Sha, Message = commit.Message, CommitedAt = commit.Committer.When });
             }
+            return commits;
+        }
+
+        private GitSortStrategy GetSortStrategy(Repository repository)
+        {
+            Trace.TraceInformation("Repository commit sort strategy is " + repository.Commits.SortedBy.ToString());
+            return (GitSortStrategy)repository.Commits.SortedBy;
         }
     }
 }

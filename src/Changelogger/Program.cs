@@ -24,7 +24,7 @@ namespace Changelogger
 
             sw.Stop();
 
-            Trace.TraceInformation("Created changelog in {0}", sw.Elapsed);
+            Console.WriteLine("Created changelog in {0}", sw.Elapsed);
 
             Console.WriteLine("Done. Press any key.");
             Console.ReadKey();
@@ -36,18 +36,38 @@ namespace Changelogger
             {
                 Trace.Listeners.Add(new ConsoleTraceListener());
             }
+            else
+            {
+                Trace.Listeners.Clear();
+            }
         }
 
         private void Start(Options options)
         {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
             GitInformation info = new GitInformation();
             var repository = info.GetRepositoryInformation(options.RepositoryPath);
+
+            watch.Stop();
+            Trace.TraceInformation("GitInformation.GetRepositoryInformation took {0}ms", watch.ElapsedMilliseconds);
+
+            watch.Restart();
 
             var preparer = MessagePrepareFactory.GetMessagePreparer(repository.SortStrategy);
             var logs = preparer.PrepareMessages(repository);
 
+            watch.Stop();
+            Trace.TraceInformation("MessagePreparer.PrepareMessages took {0}ms", watch.ElapsedMilliseconds);
+
+            watch.Restart();
+
             var exporter = LogExporterFactory.GetLogExporter("markdown");
             var val = exporter.GetExportValue(logs);
+
+            watch.Stop();
+            Trace.TraceInformation("LogExporter.GetExportValue took {0}ms", watch.ElapsedMilliseconds);
 
             File.WriteAllText(options.ExportFileName, val);
         }
