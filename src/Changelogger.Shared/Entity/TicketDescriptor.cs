@@ -10,6 +10,6 @@ namespace Changelogger.Shared.Entity
         public string Description { get; set; }
         public string ReleaseNotes { get; set; }
         public string State { get; set; }
-        public Uri Link { get; set; }
+        public string Link { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Changelogger.Ticketing.TFS
 
         private WorkItemStore Store { get; set; }
         private TfsTeamProjectCollection Collection { get; set; }
-        private Uri Link { get; set; }
+        private string Link { get; set; }
 
         public TFSTicketingIntegration()
         {
@@ -42,7 +42,7 @@ namespace Changelogger.Ticketing.TFS
                         {
                             if (descriptors.All(item => item.Id != id.ToString()))
                             {
-                                Uri link = new Uri(Link, "AutomationX/_workitems/edit/" + id);
+                                string link = Link + id;
                                 descriptors.Add(new TicketDescriptor() {Id = id.ToString(), Version = log.Tag, Title = foundItem.Title, Description = foundItem.Description, Link = link});
                             }
                         }
@@ -55,9 +55,9 @@ namespace Changelogger.Ticketing.TFS
         private void Init()
         {
             var collection = ConfigurationManager.AppSettings.Get("Collection");
-            Link = new Uri(collection);
+            Link = ConfigurationManager.AppSettings.Get("Link");
 
-            Collection = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(Link);
+            Collection = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(collection));
 
             Store = Collection.GetService<WorkItemStore>();
         }

@@ -47,10 +47,13 @@ Furthermore you have to add a setting which defines the TFS collection you want 
 ```
 <appSettings>
   <add key="Collection" value="URL-TO-TFS-COLLECTION"/>
+  <add key="Link" value="SET-TICKET-LINK"/>
 </appSettings>
 ```
 
-When starting `changelogger` add the parameter `-t tfs` to activate the TFS integration.
+The `Link`-Key is used to export a link to the ticket. The ticket-id is appended to the given link.
+
+When starting `changelogger` add the parameter `-t tfs` to activate the TFS integration. 
 
 ## Future features
 
