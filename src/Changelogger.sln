@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Changelogger.Git", "Changel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Changelogger.Test", "Changelogger.Test\Changelogger.Test.csproj", "{5545C75C-21A1-4816-9982-7D07C179A8D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Changelogger.Ticketing.TFS", "Changelogger.Ticketing.TFS\Changelogger.Ticketing.TFS.csproj", "{6CDADCC2-87AA-4C4E-BD11-5380677AB877}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,22 @@ Global
 		{5545C75C-21A1-4816-9982-7D07C179A8D6}.Release|x64.Build.0 = Release|Any CPU
 		{5545C75C-21A1-4816-9982-7D07C179A8D6}.Release|x86.ActiveCfg = Release|Any CPU
 		{5545C75C-21A1-4816-9982-7D07C179A8D6}.Release|x86.Build.0 = Release|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Debug|x64.Build.0 = Debug|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Debug|x86.Build.0 = Debug|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Release|ARM.Build.0 = Release|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Release|x64.ActiveCfg = Release|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Release|x64.Build.0 = Release|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Release|x86.ActiveCfg = Release|Any CPU
+		{6CDADCC2-87AA-4C4E-BD11-5380677AB877}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

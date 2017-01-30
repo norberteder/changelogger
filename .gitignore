@@ -1,2 +1,13 @@
-**/bin
-**/obj
+src/Changelogger.Git/bin/Debug
+src/Changelogger.Git/obj/Debug
+src/Changelogger.Shared/bin/Debug
+src/Changelogger.Shared/obj/Debug
+src/Changelogger/bin/Debug
+src/Changelogger/obj/Debug
+src/Changelogger.Test/bin/
+src/Changelogger.Test/obj/
+src/Changelogger.Ticketing.TFS/obj/
+src/Changelogger.Ticketing.TFS/bin/
+bin/Debug/
+*.suo
+*.user

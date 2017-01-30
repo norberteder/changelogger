@@ -1,4 +1,7 @@
-﻿namespace Changelogger.Shared.Entity
+﻿using System;
+using System.ComponentModel;
+
+namespace Changelogger.Shared.Entity
 {
     public class LogDescriptor
     {

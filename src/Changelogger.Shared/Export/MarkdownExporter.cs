@@ -7,21 +7,26 @@ namespace Changelogger.Shared.Export
 {
     class MarkdownExporter : ILogExporter
     {
-        public string GetExportValue(IEnumerable<LogDescriptor> logs)
+        public string GetExportValue(IEnumerable<TicketDescriptor> logs, bool addLink)
         {
             StringBuilder markdownBuilder = new StringBuilder();
 
             markdownBuilder.AppendLine("# Changelog");
 
-            var grouped = logs.GroupBy(item => item.Tag);
-            foreach(IGrouping<string, LogDescriptor> log in grouped)
+            var grouped = logs.GroupBy(item => item.Version);
+            foreach(IGrouping<string, TicketDescriptor> log in grouped)
             {
                 markdownBuilder.AppendFormat("## {0}", log.Key);
                 markdownBuilder.AppendLine();
 
                 foreach(var val in log)
                 {
-                    markdownBuilder.AppendLine("* " + val.Message.Replace("#", "\\#"));
+                    if (addLink)
+                    {
+                        markdownBuilder.AppendLine("* [" + val.Title + "](" + val.Link + " \"" + val.Title + "\")");
+                    }
+                    else
+                        markdownBuilder.AppendLine("* " + val.Title);
                 }
                 markdownBuilder.AppendLine();
             }
