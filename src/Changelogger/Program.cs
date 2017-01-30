@@ -27,6 +27,8 @@ namespace Changelogger
             GitInformation info = new GitInformation(options.RepositoryPath, GitSortStrategy.Reverse | GitSortStrategy.Time);
             info.SpecificTag = options.Tag;
 
+            info.GetRepositoryInformation();
+
             var preparer = MessagePrepareFactory.GetMessagePreparer();
             var logs = preparer.PrepareMessages(info).ToList();
 
