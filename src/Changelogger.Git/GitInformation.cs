@@ -37,7 +37,6 @@ namespace Changelogger.Git
             return new GitRepository(tags, commits, SortStrategy);
         }
 
-        // TODO return tag-range
         public IEnumerable<TagRange> Tags
         {
             get
@@ -95,7 +94,7 @@ namespace Changelogger.Git
                 var commits = repo.Commits.QueryBy(filter);
                 foreach (var commit in commits)
                 {
-                    yield return new GitCommit() {Hash = commit.Sha, Message = commit.Message, CommitedAt = commit.Committer.When};
+                    yield return new GitCommit() {Hash = commit.Sha, Message = commit.Message.Trim(), CommitedAt = commit.Committer.When};
                 }
             }
         }
@@ -118,8 +117,8 @@ namespace Changelogger.Git
             {
                 foreach(var commit in repo.Commits)
                 {
-                    Trace.TraceInformation("Found commit {0} {1} {2}", commit.Committer.When, commit.Sha, commit.Message);
-                    yield return new GitCommit() { Hash = commit.Sha, Message = commit.Message, CommitedAt = commit.Committer.When };
+                    Trace.TraceInformation("Found commit {0} {1} {2}", commit.Committer.When, commit.Sha, commit.Message.Trim());
+                    yield return new GitCommit() { Hash = commit.Sha, Message = commit.Message.Trim(), CommitedAt = commit.Committer.When };
                 }
             }
         }
