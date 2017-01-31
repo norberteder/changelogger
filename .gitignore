@@ -11,3 +11,4 @@ src/Changelogger.Ticketing.TFS/bin/
 bin/Debug/
 *.suo
 *.user
+src/Changelogger/App.config
