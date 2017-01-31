@@ -16,7 +16,8 @@ namespace Changelogger.Shared.LogMessages
 
             var tagRanges = gitInformation.Tags;
             foreach(var range in tagRanges)
-            {                
+            {
+                Trace.TraceInformation("Handling tag-range {0} to {1}", range.TagFrom, range.TagTo);
                 var commits = gitInformation.GetCommitsFromTagTo(range.TagFrom, range.FromToAreEqual ? null : range.TagTo);
                 foreach (var commit in commits)
                 {
