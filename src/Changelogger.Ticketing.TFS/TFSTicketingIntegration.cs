@@ -12,12 +12,14 @@ namespace Changelogger.Ticketing.TFS
 {
     public class TFSTicketingIntegration : ITicketingIntegrator
     {
-        private readonly string query = "SELECT[System.ID], [System.Title], [System.ChangedDate], [System.CreatedDate], [Type], [Effort] FROM WorkItems Where [System.ID] = {0}";
+        private readonly string query = "SELECT * FROM WorkItems Where [System.ID] = {0}";
 
         private WorkItemStore Store { get; set; }
         private TfsTeamProjectCollection Collection { get; set; }
         private string Link { get; set; }
         private string IdPattern { get; set; }
+        private string TitleFormat { get; set; } // e.g. "[{id}] {title}"
+        private List<string> fields = new List<string>();
 
         public TFSTicketingIntegration()
         {
@@ -42,6 +44,20 @@ namespace Changelogger.Ticketing.TFS
                         {
                             if (descriptors.All(item => item.Id != id.ToString()))
                             {
+                                var title = TitleFormat;
+
+                                if (fields.Count > 0)
+                                {
+                                    foreach(var field in fields)
+                                    {
+                                        title = title.Replace("{" + field + "}", foundItem[field].ToString());
+                                    }
+                                }
+                                else
+                                {
+                                    title = foundItem.Title;
+                                }
+
                                 string link = Link + id;
                                 descriptors.Add(new TicketDescriptor() {Id = id.ToString(), Version = log.Tag, Title = foundItem.Title, Description = foundItem.Description, Link = link});
                             }
@@ -58,10 +74,23 @@ namespace Changelogger.Ticketing.TFS
 
             Link = ConfigurationManager.AppSettings.Get("Link");
             IdPattern = ConfigurationManager.AppSettings.Get("IdPattern");
+            TitleFormat = ConfigurationManager.AppSettings.Get("TitleFormat");
+
+            ExtractFields();
 
             Collection = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(collection));
 
             Store = Collection.GetService<WorkItemStore>();
+        }
+
+        private void ExtractFields()
+        {
+            Regex regex = new Regex("{\\w *}", RegexOptions.IgnoreCase);
+            var matches = regex.Matches(TitleFormat);
+            for (int i = 0; i < matches.Count; i++)
+            {
+                fields.Add(matches[i].Value);
+            }
         }
 
         private WorkItem GetWorkItem(int id)
