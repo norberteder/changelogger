@@ -48,10 +48,16 @@ Furthermore you have to add a setting which defines the TFS collection you want 
 <appSettings>
   <add key="Collection" value="URL-TO-TFS-COLLECTION"/>
   <add key="Link" value="SET-TICKET-LINK"/>
+  <add key="IdPattern" value="ID-PATTERN"/>
+  <add key="TitleFormat" value="TITLE-FORMAT"/>
 </appSettings>
 ```
 
-The `Link`-Key is used to export a link to the ticket. The ticket-id is appended to the given link.
+The `Link`-Key is used to export a link to the ticket. The ticket-id is appended to the given link. 
+
+Define the `IdPattern` to be able to parse the id from the commit message. This is essential for finding an appropriate TFS workitem. As an example you can use `^#[0-9]*` as the ID pattern, so your commit message should look like `#1234: add some new code`.
+
+Use `TitleFormat` to set a format of your choice, e.g. `[{id}] {title}`. The parts must match properties of a TFS workitem. It no `TitleFormat` is given just the `title` is used. 
 
 When starting `changelogger` add the parameter `-t tfs` to activate the TFS integration. 
 
