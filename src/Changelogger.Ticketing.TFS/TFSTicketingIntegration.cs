@@ -12,12 +12,12 @@ namespace Changelogger.Ticketing.TFS
 {
     public class TFSTicketingIntegration : ITicketingIntegrator
     {
-        private readonly string idPattern = "^#[0-9]*"; // works for: #1234: test
         private readonly string query = "SELECT[System.ID], [System.Title], [System.ChangedDate], [System.CreatedDate], [Type], [Effort] FROM WorkItems Where [System.ID] = {0}";
 
         private WorkItemStore Store { get; set; }
         private TfsTeamProjectCollection Collection { get; set; }
         private string Link { get; set; }
+        private string IdPattern { get; set; }
 
         public TFSTicketingIntegration()
         {
@@ -28,7 +28,7 @@ namespace Changelogger.Ticketing.TFS
         {
             List<TicketDescriptor> descriptors = new List<TicketDescriptor>();
 
-            Regex regex = new Regex(idPattern, RegexOptions.IgnoreCase);
+            Regex regex = new Regex(IdPattern, RegexOptions.IgnoreCase);
             foreach (var log in logs)
             {
                 var matches = regex.Matches(log.Message);
@@ -55,7 +55,9 @@ namespace Changelogger.Ticketing.TFS
         private void Init()
         {
             var collection = ConfigurationManager.AppSettings.Get("Collection");
+
             Link = ConfigurationManager.AppSettings.Get("Link");
+            IdPattern = ConfigurationManager.AppSettings.Get("IdPattern");
 
             Collection = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(collection));
 
