@@ -17,8 +17,8 @@ namespace Changelogger.Test
         string commit3 = "#3: Update readme";
         string commit4 = "#4: Add hot new feature";
         string commit5 = "#5: Update readme";
-        string tag1 = "0.0.1";
-        string tag2 = "0.0.2";
+        Version tag1 = new Version(0,0,1);
+        Version tag2 = new Version(0,0,2);
 
         [TestInitialize]
         public void Setup()
@@ -26,10 +26,10 @@ namespace Changelogger.Test
             var hash1 = Guid.NewGuid().ToString();
             var hash2 = Guid.NewGuid().ToString();
 
-            List<GitTag> tags = new List<GitTag>
+            List<GitVersionTag> tags = new List<GitVersionTag>
             {
-                new GitTag() { Hash = hash1, Name = tag1 },
-                new GitTag() { Hash = hash2, Name = tag2 }
+                new GitVersionTag() { Hash = hash1, Version = tag1 },
+                new GitVersionTag() { Hash = hash2, Version = tag2 }
             };
 
             List<GitCommit> commits = new List<GitCommit>
@@ -79,7 +79,7 @@ namespace Changelogger.Test
         {
             var timeMessagePreparer = MessagePrepareFactory.GetMessagePreparer();
             var gitInformation = new GitInformation(null, GitSortStrategy.Reverse | GitSortStrategy.Time);
-            gitInformation.Repository = new GitRepository(new List<GitTag>(), new List<GitCommit>(), GitSortStrategy.None);
+            gitInformation.Repository = new GitRepository(new List<GitVersionTag>(), new List<GitCommit>(), GitSortStrategy.None);
             var logs = timeMessagePreparer.PrepareMessages(gitInformation).ToList();
 
             Assert.IsNotNull(logs);

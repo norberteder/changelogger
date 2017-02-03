@@ -51,8 +51,8 @@
     <Compile Include="Entity\GitCommit.cs" />
     <Compile Include="Entity\GitRepository.cs" />
     <Compile Include="Entity\GitSortStrategy.cs" />
-    <Compile Include="Entity\GitTag.cs" />
-    <Compile Include="Entity\TagRange.cs" />
+    <Compile Include="Entity\GitVersionTag.cs" />
+    <Compile Include="Entity\VersionTagRange.cs" />
     <Compile Include="GitInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

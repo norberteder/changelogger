@@ -13,7 +13,7 @@ namespace Changelogger.Shared.Export
 
             markdownBuilder.AppendLine("# Changelog");
 
-            var grouped = logs.GroupBy(item => item.Version);
+            var grouped = logs.GroupBy(item => item.Version == null ? "master" : item.Version.ToString());
             foreach(IGrouping<string, TicketDescriptor> log in grouped)
             {
                 markdownBuilder.AppendFormat("## {0}", log.Key);

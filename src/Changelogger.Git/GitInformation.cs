@@ -12,7 +12,7 @@ namespace Changelogger.Git
         private GitSortStrategy SortStrategy { get; set; }
         public GitRepository Repository { get; set; }
 
-        public string SpecificTag { get; set; }
+        public System.Version SpecificTag { get; set; }
 
         public GitInformation(string repositoryPath, GitSortStrategy sortStrategy)
         {
@@ -37,35 +37,35 @@ namespace Changelogger.Git
             return new GitRepository(tags, commits, SortStrategy);
         }
 
-        public IEnumerable<TagRange> Tags
+        public IEnumerable<VersionTagRange> Tags
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(SpecificTag))
+                if (SpecificTag == null)
                 {
-                    var tags = Repository.Tags.OrderByDescending(item => item.Name);
+                    var tags = Repository.Tags.OrderByDescending(item => item.Version);
                     var count = tags.Count();
 
                     for (int i = 0; i < count; i++)
                     {
-                        var tagRange = new TagRange();
+                        var tagRange = new VersionTagRange();
 
                         if (i + 1 < count)
                         {
-                            tagRange.TagFrom = tags.ElementAt(i).Name;
-                            tagRange.TagTo = tags.ElementAt(i + 1).Name;
+                            tagRange.VersionFrom = tags.ElementAt(i).Version;
+                            tagRange.VersionTo = tags.ElementAt(i + 1).Version;
                         }
                         else
                         {
-                            if (!string.IsNullOrWhiteSpace(SpecificTag))
+                            if (SpecificTag != null)
                             {
-                                tagRange.TagFrom = SpecificTag;
-                                tagRange.TagTo = "";
+                                tagRange.VersionFrom = SpecificTag;
+                                tagRange.VersionTo = null;
                             }
                             else
                             {
-                                tagRange.TagFrom = "master";
-                                tagRange.TagTo = tags.ElementAt(i).Name;
+                                tagRange.VersionFrom = null;
+                                tagRange.VersionTo = tags.ElementAt(i).Version;
                             }
                         }
                         yield return tagRange;
@@ -73,21 +73,21 @@ namespace Changelogger.Git
                 }
                 else
                 {
-                    yield return new TagRange() {TagFrom = SpecificTag, TagTo = SpecificTag};
+                    yield return new VersionTagRange() { VersionFrom = SpecificTag, VersionTo = SpecificTag};
                 }
             }
         }
 
-        public IEnumerable<GitCommit> GetCommitsFromTagTo(string tag1, string tag2)
+        public IEnumerable<GitCommit> GetCommitsFromTagTo(System.Version versionFrom, System.Version versionTo)
         {
             var filter = new CommitFilter
             {
                 SortBy = CommitSortStrategies.Reverse | CommitSortStrategies.Time,
-                IncludeReachableFrom = tag1, // sincelist
+                IncludeReachableFrom = versionFrom != null ? versionFrom.ToString() : "master", // sincelist
             };
 
-            if (!string.IsNullOrWhiteSpace(tag2))
-                filter.ExcludeReachableFrom = tag2; // untillist;
+            if (versionTo != null)
+                filter.ExcludeReachableFrom = versionTo.ToString(); // untillist;
 
             using (var repo = new Repository(RepositoryPath))
             {
@@ -99,14 +99,22 @@ namespace Changelogger.Git
             }
         }
 
-        private IEnumerable<GitTag> GetTags()
+        private IEnumerable<GitVersionTag> GetTags()
         {
             using (var repo = new Repository(RepositoryPath))
             {
                 foreach(var tag in repo.Tags)
                 {
                     Trace.TraceInformation("Found Tag: {0} {1}", tag.Target.Sha, tag.FriendlyName);
-                    yield return new GitTag { Hash = tag.Target.Sha, ReferenceHash = tag.Reference.TargetIdentifier, Name = tag.FriendlyName };
+                    System.Version tagVersion;
+                    if (System.Version.TryParse(tag.FriendlyName, out tagVersion))
+                    {
+                        yield return new GitVersionTag {Hash = tag.Target.Sha, ReferenceHash = tag.Reference.TargetIdentifier, Version = tagVersion};
+                    }
+                    else
+                    {
+                        Trace.TraceWarning("Tag {0} is not a version tag and therefore not recognized", tag.FriendlyName);
+                    }
                 }
             }
         }

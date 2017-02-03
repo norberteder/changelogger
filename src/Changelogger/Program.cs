@@ -1,4 +1,5 @@
-﻿using Changelogger.Git;
+﻿using System;
+using Changelogger.Git;
 using Changelogger.Shared.Export;
 using Changelogger.Shared.LogMessages;
 using CommandLine;
@@ -25,7 +26,12 @@ namespace Changelogger
             }
 
             GitInformation info = new GitInformation(options.RepositoryPath, GitSortStrategy.Reverse | GitSortStrategy.Time);
-            info.SpecificTag = options.Tag;
+            if (!string.IsNullOrEmpty(options.Tag))
+            {
+                Version specificVersion;
+                if (Version.TryParse(options.Tag, out specificVersion))
+                    info.SpecificTag = specificVersion;
+            }
 
             info.GetRepositoryInformation();
 
