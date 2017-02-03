@@ -61,6 +61,18 @@ Use `TitleFormat` to set a format of your choice, e.g. `[{id}] {title}`. The par
 
 When starting `changelogger` add the parameter `-t tfs` to activate the TFS integration. 
 
+## Export
+
+Currently just the export into a markdown file is supported. All commits (or defacts, if a ticketing tool is configured) are grouped by the version tags. You can configure the format version as follows:
+
+```
+<appSettings>
+  <add key="VersionFormat" value="{major}.{minor}.{build}"/>
+</appSettings>
+```
+
+There are four options to use: `{major}`, `{minor}`, `{revision}` and `{build}`. Everything that differs won't be replaced.
+
 ## Future features
 
 * Link to ticketing system and group commits to defact from ticketing system
