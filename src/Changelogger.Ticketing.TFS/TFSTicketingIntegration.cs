@@ -85,11 +85,11 @@ namespace Changelogger.Ticketing.TFS
 
         private void ExtractFields()
         {
-            Regex regex = new Regex("{\\w *}", RegexOptions.IgnoreCase);
+            Regex regex = new Regex("{\\w*}", RegexOptions.IgnoreCase);
             var matches = regex.Matches(TitleFormat);
             for (int i = 0; i < matches.Count; i++)
             {
-                fields.Add(matches[i].Value);
+                fields.Add(matches[i].Value.Replace("{", "").Replace("}", ""));
             }
         }
 
