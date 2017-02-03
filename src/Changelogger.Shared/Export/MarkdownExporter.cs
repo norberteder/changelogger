@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using Changelogger.Shared.Entity;
@@ -7,13 +9,13 @@ namespace Changelogger.Shared.Export
 {
     class MarkdownExporter : ILogExporter
     {
-        public string GetExportValue(IEnumerable<TicketDescriptor> logs, bool addLink)
+        public string GetExportValue(IEnumerable<TicketDescriptor> logs, bool addLink, string versionFormat)
         {
             StringBuilder markdownBuilder = new StringBuilder();
 
             markdownBuilder.AppendLine("# Changelog");
 
-            var grouped = logs.GroupBy(item => item.Version == null ? "master" : item.Version.ToString());
+            var grouped = logs.GroupBy(item => item.Version == null ? "master" : ReplaceVersion(versionFormat, item.Version));
             foreach(IGrouping<string, TicketDescriptor> log in grouped)
             {
                 markdownBuilder.AppendFormat("## {0}", log.Key);
@@ -32,6 +34,15 @@ namespace Changelogger.Shared.Export
             }
 
             return markdownBuilder.ToString();
+        }
+
+        private string ReplaceVersion(string format, Version version)
+        {
+            if (!string.IsNullOrEmpty(format))
+            {
+                return format.ToLowerInvariant().Replace("{major}", version.Major.ToString()).Replace("{minor}", version.Minor.ToString()).Replace("{revision}", version.Revision.ToString()).Replace("{build}", version.Build.ToString());
+            }
+            return version.ToString();
         }
     }
 }

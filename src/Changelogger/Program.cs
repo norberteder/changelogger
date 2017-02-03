@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using Changelogger.Git;
 using Changelogger.Shared.Export;
 using Changelogger.Shared.LogMessages;
@@ -20,6 +21,12 @@ namespace Changelogger
 
         private static void HandleOptions(Options options)
         {
+            string versionFormat = null;
+            if (ConfigurationManager.AppSettings.AllKeys.Contains("VersionFormat"))
+            {
+                versionFormat = ConfigurationManager.AppSettings["VersionFormat"];
+            }
+
             if (!options.Verbose)
             {
                 Trace.Listeners.Clear();
@@ -42,7 +49,7 @@ namespace Changelogger
             var tickets = ticketIntegrator.CombineLogsWithTicketing(logs);
 
             var exporter = LogExporterFactory.GetLogExporter("markdown");
-            var val = exporter.GetExportValue(tickets, options.LinkTickets);
+            var val = exporter.GetExportValue(tickets, options.LinkTickets, versionFormat);
 
             File.WriteAllText(options.ExportFileName, val);
         }

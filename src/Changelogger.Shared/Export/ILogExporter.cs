@@ -5,6 +5,6 @@ namespace Changelogger.Shared.Export
 {
     public interface ILogExporter
     {
-        string GetExportValue(IEnumerable<TicketDescriptor> logs, bool addLink);
+        string GetExportValue(IEnumerable<TicketDescriptor> logs, bool addLink, string versionFormat);
     }
 }
