@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <Compile Include="Entity\LogDescriptor.cs" />
     <Compile Include="Entity\TicketDescriptor.cs" />
     <Compile Include="Export\ILogExporter.cs" />
