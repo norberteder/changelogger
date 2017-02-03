@@ -59,7 +59,7 @@ namespace Changelogger.Ticketing.TFS
                                 }
 
                                 string link = Link + id;
-                                descriptors.Add(new TicketDescriptor() {Id = id.ToString(), Version = log.Tag, Title = foundItem.Title, Description = foundItem.Description, Link = link});
+                                descriptors.Add(new TicketDescriptor() {Id = id.ToString(), Version = log.Tag, Title = title, Description = foundItem.Description, Link = link});
                             }
                         }
                     }
