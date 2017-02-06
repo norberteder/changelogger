@@ -57,7 +57,7 @@ The `Link`-Key is used to export a link to the ticket. The ticket-id is appended
 
 Define the `IdPattern` to be able to parse the id from the commit message. This is essential for finding an appropriate TFS workitem. As an example you can use `^#[0-9]*` as the ID pattern, so your commit message should look like `#1234: add some new code`.
 
-Use `TitleFormat` to set a format of your choice, e.g. `[{id}] {title}`. The parts must match properties of a TFS workitem. It no `TitleFormat` is given just the `title` is used. 
+Use `TitleFormat` to set a format of your choice, e.g. `[{id}] {title}`. The parts must match properties of a TFS workitem. It no `TitleFormat` is given just the `title` is used. You can also use custom fields, e.g. `Fld10111` for the field with the Id `101111`.
 
 When starting `changelogger` add the parameter `-t tfs` to activate the TFS integration. 
 

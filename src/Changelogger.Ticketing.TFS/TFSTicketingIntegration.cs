@@ -18,7 +18,7 @@ namespace Changelogger.Ticketing.TFS
         private TfsTeamProjectCollection Collection { get; set; }
         private string Link { get; set; }
         private string IdPattern { get; set; }
-        private string TitleFormat { get; set; } // e.g. "[{id}] {title}"
+        private string TitleFormat { get; set; } // e.g. "[{id}] {title} {Fld10111}"
         private List<string> fields = new List<string>();
 
         public TFSTicketingIntegration()
@@ -36,7 +36,7 @@ namespace Changelogger.Ticketing.TFS
                 var matches = regex.Matches(log.Message);
                 if (matches.Count > 0)
                 {
-                    int id = 0;
+                    int id;
                     if (Int32.TryParse(matches[0].Value.Replace("#", ""), out id))
                     {
                         var foundItem = GetWorkItem(id);
@@ -48,9 +48,22 @@ namespace Changelogger.Ticketing.TFS
 
                                 if (fields.Count > 0)
                                 {
-                                    foreach(var field in fields)
+                                    foreach (var field in fields)
                                     {
-                                        title = title.Replace("{" + field + "}", foundItem[field].ToString());
+                                        if (field.ToLowerInvariant().StartsWith("fld"))
+                                        {
+                                            var fieldName = field.ToLowerInvariant().Replace("fld", "");
+                                            int fieldId;
+                                            if (Int32.TryParse(fieldName, out fieldId))
+                                            {
+                                                var value = foundItem.Fields.GetById(fieldId).Value;
+                                                title = title.Replace("{" + field + "}", value?.ToString() ?? "");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            title = title.Replace("{" + field + "}", foundItem[field].ToString());
+                                        }
                                     }
                                 }
                                 else
@@ -59,7 +72,7 @@ namespace Changelogger.Ticketing.TFS
                                 }
 
                                 string link = Link + id;
-                                descriptors.Add(new TicketDescriptor() {Id = id.ToString(), Version = log.Tag, Title = title, Description = foundItem.Description, Link = link});
+                                descriptors.Add(new TicketDescriptor() { Id = id.ToString(), Version = log.Tag, Title = title, Description = foundItem.Description, Link = link });
                             }
                         }
                     }
