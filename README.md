@@ -75,9 +75,8 @@ There are four options to use: `{major}`, `{minor}`, `{revision}` and `{build}`.
 
 ## Future features
 
-* Link to ticketing system and group commits to defact from ticketing system
-  * Extract defact identifier from commit message
-* Be able to generate changelog for a specific version, not only a complete branch
+* Be able to configure start and end version
+* Support GitHub ticketing
 
 ## Contribute
 
